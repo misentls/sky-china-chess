@@ -71,9 +71,7 @@ public class AbsActivity extends Activity {
 		if(msg.equals(MES_SURE_EXIT)){
 			this.dialog();
 		}
-		if(msg.equals(MES_SCAN_OVER)){
-			
-		}
+
 		
 	}
 	
@@ -128,7 +126,7 @@ public class AbsActivity extends Activity {
 		   
 	    	Log.v("STARTGAME!", "init start game!");
 	    	if(gv==null)	{gv=new GameView(this,this);}
-	          setContentView(gv);
+	          this.setContentView(gv);
 	         qipan.init();
 	      
 	    }

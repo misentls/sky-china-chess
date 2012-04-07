@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <EditText
         android:id="@+id/editText1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="phone"
-        android:text="10.1.9.196" >
+        android:text="10.1.8.26" >
 
         <requestFocus />
     </EditText>

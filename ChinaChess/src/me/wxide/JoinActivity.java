@@ -44,11 +44,13 @@ public class JoinActivity extends AbsActivity {
 		//initClient();
 		handle=new Handler(){
 			public void handleMessage(Message msg){
+				System.out.println("receivce:"+msg);
 				String message=(String)msg.obj;//obj不一定是String类，可以是别的类，看用户具体的应用
 				if(message.equals(MES_SET_CONN)){
 				bt1.setText("已连接，等待开始");
 				 }
 				if(message.equals(MES_START_GAME)){
+					Log.v("handle:", "start game ");
 				startGame();
 				}
 				if(message.equals(MES_PDIALOG_UPDATE)){
@@ -134,7 +136,7 @@ public class JoinActivity extends AbsActivity {
 									 handle.sendMessage(message);
 									 
 										Socket s = new Socket(curIp,2378);
-										s.sendUrgentData(0xff);
+										//s.sendUrgentData(0xff);
 										BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
 										BufferedReader br=new BufferedReader(new InputStreamReader(s.getInputStream()));
 									bw.write("ASK");
@@ -183,10 +185,6 @@ public class JoinActivity extends AbsActivity {
 					System.out.println("initclient"+targetIp);
 					try {
 						client=new Socket(targetIp,PORT);
-					} catch (UnknownHostException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -206,22 +204,24 @@ public class JoinActivity extends AbsActivity {
 							redSide=true;
 							Log.v("SUCC", "RED");
 							Message message=Message.obtain();
-							message.obj=MES_START_GAME;
-							handle.sendMessage(message);
+				    	 	message.obj=MES_START_GAME;
+							 handle.sendMessage(message);
+						
+							
 						}
 						else if(msg.equals("BLK")){
-							Log.v("SUCC", "RED");
+							Log.v("SUCC", "BLK1");
 							redSide=false;
 							
 							Message message=Message.obtain();
-							message.obj=MES_START_GAME;
-							handle.sendMessage(message);
-							
+				    	 	message.obj=MES_START_GAME;
+							 handle.sendMessage(message);
+						
 						}else{
-							Log.v("SUCC", "ERROR");
+						
 							ShowMsg("连接出错！");
 						}
-					}//else voer
+					}//else send 'JOIN' success
 					
 				} catch (IOException e) {
 					Log.v("ERROR", "连接失败!");
@@ -230,17 +230,10 @@ public class JoinActivity extends AbsActivity {
 				}
 				
 					
-					
-			
-					Message message=Message.obtain();
-					message.obj=MES_SET_CONN;
-					handle.sendMessage(message);
-					
-					//setOtherSide(targetIp);
-					Log.v("target", targetIp);
+				Log.v("initclient over!","1");
 					
 					
-				}//JOIN
+				}//run
 				
 						
 			
@@ -273,9 +266,10 @@ public class JoinActivity extends AbsActivity {
 		@Override
 		public void onClick(View arg0) {
 			if(isCorrectIp(et01.getText().toString())){	//检测ip
-				targetIp=et01.getText().toString();
+				targetIp=et01.getText().toString().trim();
 				Log.v("SET", targetIp);
 				initClient();	
+			
 			}else{
 			// TODO Auto-generated method stub
 			ShowMsg("请输入正确的ip地址.");
@@ -288,12 +282,10 @@ public class JoinActivity extends AbsActivity {
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("can over!1");
-			StringBuilder sb=new StringBuilder(100);
 		
+			serverList.clear();
 			scan=new ScanThread();
 			scan.start();
-			System.out.println("can over!");
 			progessDialog();
 
 			
