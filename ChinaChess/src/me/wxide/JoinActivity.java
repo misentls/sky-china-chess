@@ -99,13 +99,25 @@ public class JoinActivity extends AbsActivity {
 	     }
 	
 	class ScanThread extends Thread{
-		
-		 String ip="10.1.8.";
+		/**
+		 * 
+		 * @param mass	between 0-23 	
+		 */
+		 public ScanThread(int mass) {
+			
+			// TODO Auto-generated constructor stub
+		 }
+		 public ScanThread() {
+				this(24);
+				reset();
+				// TODO Auto-generated constructor stub
+			 }
+		String ip="10.1.8.";
 		 Integer index=254;
 		 int tcout=0;
 		
 		 public void reset(){
-			 ip="10.1.8.";
+			 ip=currentIp.substring(0,currentIp.lastIndexOf(".")+1);
 		 index=254;
 		 tcout=0;
 		 }
@@ -254,15 +266,7 @@ public class JoinActivity extends AbsActivity {
 		
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		
-		   if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME){
-               dialog();
-            }
-		return super.onKeyDown(keyCode, event);
-	}
+
 
 	//init set widget listen
 	private void initListen(){

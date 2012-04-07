@@ -2,6 +2,7 @@ package me.wxide;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.widget.Toast;
 public class MainActivity extends AbsActivity {
 	
     private Button button01,button02,button03;
-    private TextView et01;
+    private TextView et01,et02,et03;
 	protected int message;
 	
     /** Called when the activity is first created. */
@@ -33,11 +34,14 @@ public class MainActivity extends AbsActivity {
       this.button01=(Button) this.findViewById(R.id.button1);
       this.button02=(Button) this.findViewById(R.id.button2);
       this.et01=(TextView) this.findViewById(R.id.textView1);
-      
+    //  this.et02=(TextView) this.findViewById(R.id.textView2);
+    //  this.et03=(TextView) this.findViewById(R.id.textView3);
       this.currentIp=this.getIp();
-      
-      this.et01.setText("我的IP:"+currentIp);
-
+     WifiManager wifi= (WifiManager)getSystemService(WIFI_SERVICE);
+     DhcpInfo info=wifi.getDhcpInfo();
+      this.et01.setText("我的IP:"+Integer.toHexString(info.ipAddress));
+     // this.et02.setText("我的IP:"+Integer.toHexString(info.netmask));
+     // this.et03.setText("我的IP:"+Integer.toHexString(info.netmask&info.ipAddress)+"::"+intToIp(info.netmask&info.ipAddress));
      initListen();
      
     }

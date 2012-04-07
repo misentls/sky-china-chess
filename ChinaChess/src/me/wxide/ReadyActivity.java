@@ -135,15 +135,7 @@ public class ReadyActivity extends AbsActivity {
 	}
 	
 	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		
-		   if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME){
-               dialog();
-            }
-		return super.onKeyDown(keyCode, event);
-	}
+	
 	
     private void choiceRed(boolean flag){
     	if(flag)	{

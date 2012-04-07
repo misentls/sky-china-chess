@@ -16,11 +16,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -38,7 +41,7 @@ public class AbsActivity extends Activity {
 	protected final static int PORT=2378;
 	protected Handler handle;
 	protected static boolean redSide=true;//当前玩家所执的棋是红方还是黑方
-	
+	 public static ArrayList<Activity> activityList = new ArrayList<Activity>();
 	protected static GameView gv;		
 	protected static ServerSocket server;		
 	protected static Socket client;
@@ -58,12 +61,26 @@ public class AbsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+		activityList.add(this);	
 	
 		
 	}
 	
-	
+	public  void exitClient()
+    {
+      
+        // 关闭所有Activity
+        for (int i = 0; i < activityList.size(); i++)
+        {
+            if (null != activityList.get(i))
+            {
+                activityList.get(i).finish();
+            }
+        }
+        ActivityManager activityManager = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
+        activityManager.restartPackage("包路径");
+        System.exit(0);//Android的程序只是让Activity finish()掉,而单纯的finish掉,退出并不完全
+    }
 	
 
 	
@@ -105,11 +122,17 @@ public class AbsActivity extends Activity {
 		  return true;
 		  
 	  } 
-
+    	protected String getNetmass(){
+    		WifiManager wifi=(WifiManager)getSystemService(WIFI_SERVICE);
+	    	DhcpInfo wifiinfo=wifi.getDhcpInfo();
+	    	int ip=wifiinfo.netmask;
+	    	return intToIp(ip);	
+    	}
 
 	  protected String getIp(){
 	    	WifiManager wifi=(WifiManager)getSystemService(WIFI_SERVICE);
 	    	WifiInfo wifiinfo=wifi.getConnectionInfo();
+
 	    	int ip=wifiinfo.getIpAddress();
 	    	return intToIp(ip);
 	    }
@@ -128,10 +151,7 @@ public class AbsActivity extends Activity {
 
 	   protected void startGame(){
 		   
-	    	Log.v("STARTGAME!", "init start game!");
-	    	if(gv==null)	{gv=new GameView(this,this);}
-	          setContentView(gv);
-	         qipan.init();
+	    startActivity(new Intent(AbsActivity.this,GameActivity.class));
 	      
 	    }
 	   
@@ -180,10 +200,7 @@ public class AbsActivity extends Activity {
 	    	  builder.setPositiveButton("确认", new OnClickListener() {
 	    	   @Override
 	    	   public void onClick(DialogInterface dialog, int which) {
-	    	   // dialog.dismiss();
-	    	   // AbsActivity.this.finish();
-	    		   android.os.Process.killProcess(android.os.Process.myPid());
-	    		  // System.exit(0); 
+	    		   exitClient();
 
 	    	   }
 	    	  });
