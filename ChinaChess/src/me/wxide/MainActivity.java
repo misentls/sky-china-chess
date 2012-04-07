@@ -39,7 +39,7 @@ public class MainActivity extends AbsActivity {
       this.currentIp=this.getIp();
      WifiManager wifi= (WifiManager)getSystemService(WIFI_SERVICE);
      DhcpInfo info=wifi.getDhcpInfo();
-      this.et01.setText("我的IP:"+Integer.toHexString(info.ipAddress));
+      this.et01.setText("我的IP:"+currentIp);
      // this.et02.setText("我的IP:"+Integer.toHexString(info.netmask));
      // this.et03.setText("我的IP:"+Integer.toHexString(info.netmask&info.ipAddress)+"::"+intToIp(info.netmask&info.ipAddress));
      initListen();
