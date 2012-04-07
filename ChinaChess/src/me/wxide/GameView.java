@@ -13,7 +13,11 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Looper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -43,6 +48,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	
 	private QiPan qipan;
 	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		   if(keyCode == KeyEvent.KEYCODE_BACK){
+			   activity.dialog();
+		   }
+		return true;
+	}
+
 	private QueneThread quene;//接收到的信息的队列
 
 

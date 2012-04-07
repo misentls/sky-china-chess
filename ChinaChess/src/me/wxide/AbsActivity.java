@@ -27,6 +27,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 
@@ -71,7 +73,9 @@ public class AbsActivity extends Activity {
 		if(msg.equals(MES_SURE_EXIT)){
 			this.dialog();
 		}
-
+		if(msg.equals(MES_SCAN_OVER)){
+			
+		}
 		
 	}
 	
@@ -126,7 +130,7 @@ public class AbsActivity extends Activity {
 		   
 	    	Log.v("STARTGAME!", "init start game!");
 	    	if(gv==null)	{gv=new GameView(this,this);}
-	          this.setContentView(gv);
+	          setContentView(gv);
 	         qipan.init();
 	      
 	    }
@@ -176,8 +180,11 @@ public class AbsActivity extends Activity {
 	    	  builder.setPositiveButton("È·ÈÏ", new OnClickListener() {
 	    	   @Override
 	    	   public void onClick(DialogInterface dialog, int which) {
-	    	    dialog.dismiss();
-	    	    AbsActivity.this.finish();
+	    	   // dialog.dismiss();
+	    	   // AbsActivity.this.finish();
+	    		   android.os.Process.killProcess(android.os.Process.myPid());
+	    		  // System.exit(0); 
+
 	    	   }
 	    	  });
 	    	  
@@ -195,5 +202,17 @@ public class AbsActivity extends Activity {
 	    	 	message.obj=msg;
 				 handle.sendMessage(message);
 	     }
+	 	@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			menu.add(0, 1, 1, "ÍË³ö");
+			return super.onCreateOptionsMenu(menu);
+		}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			dialog();
+			
+			return super.onOptionsItemSelected(item);
+		}
 	   
 }

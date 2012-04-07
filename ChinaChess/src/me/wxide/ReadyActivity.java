@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -134,7 +135,16 @@ public class ReadyActivity extends AbsActivity {
 	}
 	
 	
-  
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		
+		   if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME){
+               dialog();
+            }
+		return super.onKeyDown(keyCode, event);
+	}
+	
     private void choiceRed(boolean flag){
     	if(flag)	{
     		tv2.setText(this.getIp());
