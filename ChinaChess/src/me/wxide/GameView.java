@@ -258,9 +258,9 @@ public boolean onTouchEvent(MotionEvent event) {
 			}			
 		}
 	}//if end
-	else{
-		toastMsg("还没轮到你呢!",true);
-	}
+		if(AbsActivity.redSide!=qipan.redTure&&event.getAction()==MotionEvent.ACTION_DOWN)
+			toastMsg("还没轮到你呢!",true);
+	
 	// TODO Auto-generated method stub
 	return true;
 	//return super.onTouchEvent(event);

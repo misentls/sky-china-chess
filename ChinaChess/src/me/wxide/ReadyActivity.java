@@ -10,6 +10,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -98,9 +106,44 @@ public class ReadyActivity extends AbsActivity {
 		  
 	}
 
+	private void noIpDialog(){
+		NetWorkStatus();
+	}
 	
-	
-	
+	private boolean NetWorkStatus() {
+
+		boolean netSataus = false;
+		ConnectivityManager cwjManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		cwjManager.getActiveNetworkInfo();
+
+		if (cwjManager.getActiveNetworkInfo() != null) {
+		netSataus = cwjManager.getActiveNetworkInfo().isAvailable();
+		}
+
+		if (netSataus) {
+		Builder b = new AlertDialog.Builder(this).setTitle("没有可用的网络")
+		.setMessage("是否对网络进行设置？");
+		b.setPositiveButton("是", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int whichButton) {
+		Intent mIntent = new Intent("/");
+		ComponentName comp = new ComponentName(
+		"com.android.settings",
+		"com.android.settings.WirelessSettings");
+		mIntent.setComponent(comp);
+		mIntent.setAction("android.intent.action.VIEW");
+		startActivityForResult(mIntent,0); // 如果在设置完成后需要再次进行操作，可以重写操作代码，在这里不再重写
+		}
+		}).setNeutralButton("否", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int whichButton) {
+		dialog.cancel();
+		}
+		}).show();
+		}
+
+		return netSataus;
+		}
+		 
 
 	private void initListen(){
 		

@@ -1,6 +1,10 @@
 package me.wxide;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
@@ -36,15 +40,54 @@ public class MainActivity extends AbsActivity {
       this.et01=(TextView) this.findViewById(R.id.textView1);
     //  this.et02=(TextView) this.findViewById(R.id.textView2);
     //  this.et03=(TextView) this.findViewById(R.id.textView3);
-      this.currentIp=this.getIp();
-     WifiManager wifi= (WifiManager)getSystemService(WIFI_SERVICE);
-     DhcpInfo info=wifi.getDhcpInfo();
+
+   
       this.et01.setText("我的IP:"+currentIp);
      // this.et02.setText("我的IP:"+Integer.toHexString(info.netmask));
      // this.et03.setText("我的IP:"+Integer.toHexString(info.netmask&info.ipAddress)+"::"+intToIp(info.netmask&info.ipAddress));
      initListen();
      
     }
+    
+
+
+	@Override
+	protected void onStart() {
+		
+		 this.currentIp=this.getIp();
+	     WifiManager wifi= (WifiManager)getSystemService(WIFI_SERVICE);
+	     if(this.currentIp.equals("0.0.0.0")){
+	    	 
+	    	 networkSetting();
+	     }
+	     this.et01.setText("我的IP:"+currentIp);
+		// TODO Auto-generated method stub
+		super.onStart();
+	}
+
+
+
+	private void networkSetting(){
+    	
+    	Builder b = new AlertDialog.Builder(this).setTitle("没有可用WIFI的网络").setMessage("请开启WIFI网络连接"); 
+    	b.setPositiveButton("确定", new DialogInterface.OnClickListener() { 
+    	public void onClick(DialogInterface dialog, int whichButton) { 
+    	Intent mIntent = new Intent("/"); 
+    	ComponentName comp = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings"); 
+    	mIntent.setComponent(comp); 
+    	mIntent.setAction("android.intent.action.VIEW"); 
+    	startActivity(mIntent); 
+    	} 
+    	}).setNeutralButton("退出", new DialogInterface.OnClickListener() { 
+    	public void onClick(DialogInterface dialog, int whichButton) { 
+    	dialog.cancel(); 
+    	exitClient();
+    	} 
+    	}).create(); 
+    	b.show(); 
+    	
+    }
+    
     /**
      * 	设置2个button的监听事件
      */
